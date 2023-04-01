@@ -11,7 +11,7 @@ const Home = () => {
     e.preventDefault();
 
     fetch('/api/listings', {
-      method: 'post', body: JSON.stringify(inputs),
+      method: 'post', body: JSON.stringify(query),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -20,10 +20,10 @@ const Home = () => {
 
   return (
     <div>
-      <h1>Welcome to my website!</h1>
+      <h1>spacecats</h1>
       <form method='get' onSubmit={handleSubmit}>
         <input type="text" value={query.q || ""} name="q" id="q" onChange={handleChange} placeholder="search something"></input>
-        <input type="text" value={query.post || ""} onChange={handleChange} placeholder='postal code'></input>
+        <input type="text" value={query.post || ""} name="post" id="post" onChange={handleChange} placeholder="search something"></input>
         <input type="submit" value="Search" />
       </form>
       {/*           <div>

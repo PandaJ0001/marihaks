@@ -31,10 +31,26 @@ const GGL_API = process.env['GOOGLE_MAPS']
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get("/api/listings", (req, res) => {
+app.post("/api/listings", async (req, res) => {
+
+  const search = req.body;
+  const postal = search.post
+
+  const result = await Listing.find({
+    $or: [{ org: { $regex: search.q, $options: 'i' } }, { category: { $regex: search.q, $options: 'i' } }, { description: { $regex: search.q, $options: 'i' } }]
+  });
+
+  result.forEach(async (res) => {
+    const address = res.address;
+    const geoloc = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address} Canada&key=${GGL_API}`);
   
+    let lat = geoloc.data.results[0].geometry.location.lat;
+    let long = geoloc.data.results[0].geometry.location.lng;
+  })
   
-  const Listings = Listing.find({});
+
+  console.log(result);
+
 });
 
 app.post("/api/listing", async (req, res) => {
